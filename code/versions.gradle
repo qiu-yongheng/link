@@ -13,5 +13,6 @@ ext.deps = [
 ext.versions = [
         'ble'   : '1.0.0',
         'utils' : '1.0.0',
-        'widget': '1.0.0'
+        'widget': '1.0.0',
+        'omnible': '1.0.1'
 ]

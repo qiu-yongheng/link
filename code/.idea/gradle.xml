@@ -10,6 +10,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/ble" />
+            <option value="$PROJECT_DIR$/omniBleLibrary" />
             <option value="$PROJECT_DIR$/utils" />
             <option value="$PROJECT_DIR$/widget" />
           </set>
