@@ -11,5 +11,8 @@
     <application>
         <activity android:name="com.google.zxing.client.android.activity.CaptureActivity"
                   android:screenOrientation="portrait"/>
+
+        <activity android:name=".welcome.WelcomeActivity"
+                  android:screenOrientation="portrait"/>
     </application>
 </manifest>
