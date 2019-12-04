@@ -1,0 +1,8 @@
+package com.omni.support.ble.core;
+
+/**
+ * 数据序列化接口
+ */
+public interface BufferSerializable {
+    byte[] getBuffer();
+}

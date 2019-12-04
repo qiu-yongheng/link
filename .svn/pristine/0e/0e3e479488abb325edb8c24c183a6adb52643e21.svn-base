@@ -1,0 +1,68 @@
+package com.omni.support.ble.protocol.bloom
+
+import com.omni.support.ble.protocol.Command
+import com.omni.support.ble.protocol.base.model.EmptyResult
+import com.omni.support.ble.rover.annotations.CommandID
+import com.omni.support.ble.rover.annotations.NoResponse
+import com.omni.support.ble.rover.annotations.U32
+import com.omni.support.ble.rover.annotations.U8
+
+/**
+ * @author 邱永恒
+ *
+ * @time 2019/8/29 16:33
+ *
+ * @desc TODO 钢缆锁
+ *
+ */
+interface BloomCommands {
+
+    /**
+     * 设备存储有key, 发送校验
+     */
+    @CommandID(0x01)
+    fun checkKey(inputKey: ByteArray): Command<EmptyResult>
+
+    /**
+     * 设置key
+     */
+    @CommandID(0x01)
+    fun setKey(inputKey: ByteArray): Command<EmptyResult>
+
+    /**
+     * 擦除key
+     */
+    fun deleteKey(): Command<EmptyResult>
+
+    /**
+     * 开锁
+     */
+    @CommandID(0x05)
+    fun unlock(@U8 data: Int = 0x80): Command<EmptyResult>
+
+    /**
+     * 开锁(带时间戳)
+     */
+    @CommandID(0x09)
+    fun unlock(@U32 timestamp: Long): Command<EmptyResult>
+
+    /**
+     * 蓝牙关机
+     */
+    @CommandID(0x06)
+    fun shutdown(@U8 data: Int = 0x30): Command<EmptyResult>
+
+    /**
+     * 开机模式
+     * @param data 0x10 APP + 按钮; 0x20 仅APP
+     */
+    @CommandID(0x05)
+    fun setUnlockMode(@U8 data: Int): Command<EmptyResult>
+
+    /**
+     * 发送心跳包
+     */
+    @NoResponse
+    @CommandID(0x07)
+    fun heartbeat(@U8 data: Int = 0x00): Command<Void>
+}

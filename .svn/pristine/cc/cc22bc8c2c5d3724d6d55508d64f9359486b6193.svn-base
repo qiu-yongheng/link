@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+
+            <Button
+                    android:id="@+id/btn_connect"
+                    android:text="连接"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_disconnect"
+                    android:text="断开连接"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_key"
+                    android:text="获取key"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_unlock"
+                    android:text="不拦车"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_lock"
+                    android:text="拦车"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_modify_key"
+                    android:text="修改蓝牙key"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_get_old_data"
+                    android:text="读取旧数据"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_clean_old_data"
+                    android:text="清除旧数据"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_pair"
+                    android:text="配对"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_rc_info"
+                    android:text="遥控器信息"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_local_mac"
+                    android:text="获取设备本身mac地址"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_rc_mode"
+                    android:text="遥控器模式设置"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_info"
+                    android:text="获取锁信息"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_fw_info"
+                    android:text="获取固件信息"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_fw"
+                    android:text="获取固件包"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_get_fw_info"
+                    android:text="获取全部固件信息"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_start_modify"
+                    android:text="发送一个修改包"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_send_pack"
+                    android:text="发送修改包"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_upgrade"
+                    android:text="固件升级"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_shutdown"
+                    android:text="关机"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_get_log"
+                    android:text="获取日志"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_pair_rc"
+                    android:text="配对遥控器"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

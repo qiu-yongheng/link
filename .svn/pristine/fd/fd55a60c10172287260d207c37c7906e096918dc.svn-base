@@ -1,0 +1,22 @@
+//package com.omni.support.ble.link
+//
+//import com.omni.support.ble.profile.sub.BloomProfileManager
+//import com.omni.support.ble.protocol.bloom.BloomPackAdapter
+//import com.omni.support.ble.session.BaseBuilder
+//
+///**
+// * @author 邱永恒
+// *
+// * @time 2019/8/29 16:25
+// *
+// * @desc 钢缆锁
+// *
+// */
+//class BloomLink(build: BaseBuilder<*>) : BleLink(build) {
+//    init {
+//        setDataPackAdapter(BloomPackAdapter())
+//
+//        profile = BloomProfileManager(receiver)
+//        profile.setGattCallbacks(profileCallback)
+//    }
+//}

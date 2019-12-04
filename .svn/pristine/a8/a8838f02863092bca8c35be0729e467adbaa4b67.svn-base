@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+            <Button
+                    android:id="@+id/btn_connect"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:text="连接" />
+
+            <Button
+                    android:id="@+id/btn_disconnect"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:text="断开连接" />
+
+            <Button
+                    android:id="@+id/btn_token"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:text="获取Token" />
+
+            <Button
+                    android:id="@+id/btn_battery_status"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:text="获取电量" />
+
+            <Button
+                    android:id="@+id/btn_unlock"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:text="开锁" />
+
+            <Button
+                    android:id="@+id/btn_lock"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:text="关锁" />
+
+            <Button
+                    android:id="@+id/btn_modify_name"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:text="修改广播名称" />
+
+            <Button
+                    android:id="@+id/btn_lock_status"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:text="查询锁状态" />
+
+            <Button
+                    android:id="@+id/btn_get_work_mode"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:text="查询工作模式" />
+
+            <Button
+                    android:id="@+id/btn_set_work_mode"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:text="设置工作模式" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

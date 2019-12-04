@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+    <Button
+            android:id="@+id/btn_connect"
+            android:text="连接"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content" />
+
+    <Button
+            android:id="@+id/btn_disconnect"
+            android:text="断开连接"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content" />
+
+    <Button
+            android:id="@+id/btn_key"
+            android:text="获取key"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content" />
+
+    <Button
+            android:id="@+id/btn_unlock"
+            android:text="开锁"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content" />
+
+    <Button
+            android:id="@+id/btn_info"
+            android:text="获取锁信息"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content" />
+
+    <Button
+            android:id="@+id/btn_low_open"
+            android:text="低电量开"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content" />
+
+    <Button
+            android:id="@+id/btn_low_close"
+            android:text="低电量关"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content" />
+
+
+
+</LinearLayout>

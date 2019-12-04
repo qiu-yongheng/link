@@ -1,0 +1,460 @@
+package com.omni.support
+
+import android.util.Log
+import android.widget.Toast
+import com.omni.support.ble.core.*
+import com.omni.support.ble.protocol.base.model.ErrorResult
+import com.omni.support.ble.protocol.base.model.ReadResult
+import com.omni.support.ble.protocol.base.model.WriteResult
+import com.omni.support.ble.protocol.scooter.model.*
+import com.omni.support.ble.rover.CommandManager
+import com.omni.support.ble.session.ISessionListener
+import com.omni.support.ble.session.SimpleSessionListener
+import com.omni.support.ble.session.sub.ScooterSession
+import com.omni.support.ble.task.OnProgressListener
+import com.omni.support.ble.task.Progress
+import com.omni.support.ble.task.scooter.ScooterReadTask
+import com.omni.support.ble.task.scooter.ScooterWriteTask
+import com.omni.support.ble.utils.DataUtils
+import com.omni.support.widget.base.BaseActivity
+import kotlinx.android.synthetic.main.activity_scooter.*
+
+/**
+ * @author 邱永恒
+ *
+ * @time 2019/8/26 9:23
+ *
+ * @desc
+ *
+ */
+class ScooterTestActivity : BaseActivity() {
+    private lateinit var session: ScooterSession
+
+    override fun getLayoutId(): Int {
+        return R.layout.activity_scooter
+    }
+
+    override fun initListener() {
+        session = ScooterSession.Builder()
+            .address("DD:20:9A:8E:BF:CE")
+//            .address("C4:10:8A:F4:78:AC")
+            .deviceKey("yOTmK50z")
+            .deviceType("8A")
+//            .deviceType("77")
+            .updateKey("Vgz7")
+            .build()
+
+        session.setListener(object : SimpleSessionListener() {
+            override fun onConnecting() {
+                Toast.makeText(this@ScooterTestActivity, "正在连接...", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onConnected() {
+                Toast.makeText(this@ScooterTestActivity, "连接成功", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onDisconnected() {
+                Toast.makeText(this@ScooterTestActivity, "断开连接", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onDeviceNoSupport() {
+                Toast.makeText(this@ScooterTestActivity, "设备不支持", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onReady() {
+                session.call(CommandManager.scooterCommand.error())
+                    .subscribe(object : NotifyCallback<ErrorResult> {
+                        override fun onSuccess(
+                            call: ISessionCall<ErrorResult>,
+                            data: IResp<ErrorResult>
+                        ) {
+                            val result = data.getResult()
+                            if (result != null) {
+                                Log.d("=====", result.toString())
+                            }
+                        }
+                    })
+            }
+        })
+
+        btn_connect.setOnClickListener {
+            session.connect()
+        }
+
+        btn_disconnect.setOnClickListener {
+            session.disConnect()
+        }
+
+        btn_key.setOnClickListener {
+            session.initConfig()
+        }
+
+        btn_unlock.setOnClickListener {
+            session.call(
+                CommandManager.scooterCommand.unlock(
+                    uid = 0,
+                    timestamp = System.currentTimeMillis() / 1000,
+                    unlockType = 0x00
+                )
+            )
+                .enqueue(object : SessionCallback<ScooterUnlockResult> {
+                    override fun onSuccess(
+                        call: ISessionCall<ScooterUnlockResult>,
+                        data: IResp<ScooterUnlockResult>
+                    ) {
+                        val result = data.getResult()
+                        if (result != null) {
+                            Log.d("=====", result.toString())
+                        }
+                        session.call(CommandManager.scooterCommand.unlockReply()).execute()
+                    }
+
+                    override fun onFailure(call: ISessionCall<ScooterUnlockResult>, e: Throwable) {
+
+                    }
+                })
+        }
+
+        btn_lock.setOnClickListener {
+            session.call(CommandManager.scooterCommand.lock())
+                .enqueue(object : SessionCallback<ScooterLockResult> {
+                    override fun onSuccess(
+                        call: ISessionCall<ScooterLockResult>,
+                        data: IResp<ScooterLockResult>
+                    ) {
+                        val result = data.getResult()
+                        if (result != null) {
+                            Log.d("=====", result.toString())
+                        }
+                        session.call(CommandManager.scooterCommand.lockReply()).execute()
+                    }
+
+                    override fun onFailure(call: ISessionCall<ScooterLockResult>, e: Throwable) {
+
+                    }
+                })
+        }
+
+        btn_open.setOnClickListener {
+            session.call(CommandManager.scooterCommand.powerControl(0x02)).execute()
+        }
+
+        btn_close.setOnClickListener {
+            session.call(CommandManager.scooterCommand.powerControl(0x01)).execute()
+        }
+
+        btn_start_modify.setOnClickListener {
+            val unPack = DataUtils.unPack("IP:se-ava.ryde.vip,PORT:9680,IPMODE:1,")
+            session.call(
+                CommandManager.scooterCommand.startWrite(
+                    0x01,
+                    unPack.totalPack,
+                    unPack.crc,
+                    session.getDeviceType(),
+                    session.getUpdateKey()
+                )
+            )
+                .enqueue(object : SessionCallback<WriteResult> {
+                    override fun onSuccess(
+                        call: ISessionCall<WriteResult>,
+                        data: IResp<WriteResult>
+                    ) {
+                        val result = data.getResult()
+                        if (result != null) {
+                            Log.d("=====", result.toString())
+                        }
+                        session.call(CommandManager.scooterCommand.write(0, unPack.pack[0]))
+                            .enqueue(object : SessionCallback<WriteResult> {
+                                override fun onSuccess(
+                                    call: ISessionCall<WriteResult>,
+                                    data: IResp<WriteResult>
+                                ) {
+                                    val result = data.getResult()
+                                    if (result != null) {
+                                        Log.d("=====", result.toString())
+                                    }
+                                }
+
+                                override fun onFailure(
+                                    call: ISessionCall<WriteResult>,
+                                    e: Throwable
+                                ) {
+                                }
+                            })
+                    }
+
+                    override fun onFailure(call: ISessionCall<WriteResult>, e: Throwable) {
+                    }
+                })
+        }
+
+        btn_send_pack.setOnClickListener {
+            ScooterWriteTask(
+                session,
+                "IP:se-ava.ryde.vip,PORT:9680,IPMODE:1,",
+                session.getDeviceType(),
+                session.getUpdateKey(),
+                object :
+                    OnProgressListener<Boolean> {
+                    override fun onProgress(progress: Progress) {
+                        Log.d(
+                            "=====",
+                            "percent = ${progress.getPercent()}%, speed = ${progress.getSpeed()}b/s"
+                        )
+                    }
+
+                    override fun onStatusChanged(status: Int, e: Throwable?) {
+                        Log.e("=====", "status = $status")
+                    }
+
+                    override fun onComplete(t: Boolean) {
+                        Log.d("=====", "complete = $t")
+                    }
+                }).start()
+        }
+
+        btn_info.setOnClickListener {
+            session.call(CommandManager.scooterCommand.getLockInfo())
+                .enqueue(object : SessionCallback<ScooterLockInfoResult> {
+                    override fun onSuccess(
+                        call: ISessionCall<ScooterLockInfoResult>,
+                        data: IResp<ScooterLockInfoResult>
+                    ) {
+                        val result = data.getResult()
+                        if (result != null) {
+                            Log.d("=====", result.toString())
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: ISessionCall<ScooterLockInfoResult>,
+                        e: Throwable
+                    ) {
+                    }
+                })
+        }
+
+        btn_fw_info.setOnClickListener {
+            session.call(CommandManager.scooterCommand.startRead())
+                .enqueue(object : SessionCallback<ScooterStartReadResult> {
+                    override fun onSuccess(
+                        call: ISessionCall<ScooterStartReadResult>,
+                        data: IResp<ScooterStartReadResult>
+                    ) {
+                        val result = data.getResult()
+                        if (result != null) {
+                            Log.d("=====", result.toString())
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: ISessionCall<ScooterStartReadResult>,
+                        e: Throwable
+                    ) {
+                    }
+                })
+        }
+
+        btn_fw.setOnClickListener {
+            session.call(CommandManager.scooterCommand.read(0, session.getDeviceType()))
+                .enqueue(object : SessionCallback<ReadResult> {
+                    override fun onSuccess(
+                        call: ISessionCall<ReadResult>,
+                        data: IResp<ReadResult>
+                    ) {
+                        val result = data.getResult()
+                        if (result != null) {
+                            Log.d("=====", result.toString())
+                        }
+                    }
+
+                    override fun onFailure(call: ISessionCall<ReadResult>, e: Throwable) {
+                    }
+                })
+        }
+
+        btn_get_fw_info.setOnClickListener {
+            ScooterReadTask(session, object : OnProgressListener<String> {
+                override fun onProgress(progress: Progress) {
+                    Log.d(
+                        "=====",
+                        "percent = ${progress.getPercent()}%, speed = ${progress.getSpeed()}b/s"
+                    )
+                }
+
+                override fun onStatusChanged(status: Int, e: Throwable?) {
+                    Log.e("=====", "status = $status")
+                }
+
+                override fun onComplete(t: String) {
+                    Log.d("=====", "complete = $t")
+                }
+            }).start()
+        }
+
+        btn_get_old_data.setOnClickListener {
+            session.call(CommandManager.scooterCommand.getOldData())
+                .enqueue(object : SessionCallback<ScooterOldDataResult> {
+                    override fun onSuccess(
+                        call: ISessionCall<ScooterOldDataResult>,
+                        data: IResp<ScooterOldDataResult>
+                    ) {
+                        val result = data.getResult()
+                        if (result != null) {
+                            Log.d("=====", result.toString())
+                        }
+                    }
+
+                    override fun onFailure(call: ISessionCall<ScooterOldDataResult>, e: Throwable) {
+                    }
+                })
+        }
+
+        btn_clean_old_data.setOnClickListener {
+            session.call(CommandManager.scooterCommand.cleanOldData())
+                .enqueue(object : SessionCallback<Boolean> {
+                    override fun onSuccess(call: ISessionCall<Boolean>, data: IResp<Boolean>) {
+                        val result = data.getResult()
+                        if (result != null) {
+                            Log.d("=====", result.toString())
+                        }
+                    }
+
+                    override fun onFailure(call: ISessionCall<Boolean>, e: Throwable) {
+                    }
+                })
+        }
+
+        btn_scooter_info.setOnClickListener {
+            session.call(CommandManager.scooterCommand.getScooterInfo())
+                .enqueue(object : SessionCallback<ScooterInfoResult> {
+                    override fun onSuccess(
+                        call: ISessionCall<ScooterInfoResult>,
+                        data: IResp<ScooterInfoResult>
+                    ) {
+                        val result = data.getResult()
+                        if (result != null) {
+                            Log.d("=====", result.toString())
+                        }
+                    }
+
+                    override fun onFailure(call: ISessionCall<ScooterInfoResult>, e: Throwable) {
+                    }
+                })
+        }
+
+        btn_light_on.setOnClickListener {
+            session.call(CommandManager.scooterCommand.setScooterConfig(light = 0x02))
+                .enqueue(object : SessionCallback<Boolean> {
+                    override fun onSuccess(call: ISessionCall<Boolean>, data: IResp<Boolean>) {
+                        val result = data.getResult()
+                        if (result != null) {
+                            Log.d("=====", result.toString())
+                        }
+                    }
+
+                    override fun onFailure(call: ISessionCall<Boolean>, e: Throwable) {
+                    }
+                })
+        }
+
+        btn_light_off.setOnClickListener {
+            session.call(CommandManager.scooterCommand.setScooterConfig(light = 0x01))
+                .enqueue(object : SessionCallback<Boolean> {
+                    override fun onSuccess(call: ISessionCall<Boolean>, data: IResp<Boolean>) {
+                        val result = data.getResult()
+                        if (result != null) {
+                            Log.d("=====", result.toString())
+                        }
+                    }
+
+                    override fun onFailure(call: ISessionCall<Boolean>, e: Throwable) {
+                    }
+                })
+        }
+
+        btn_bloom_unlock.setOnClickListener {
+            session.call(CommandManager.scooterCommand.setOutLockControl(0x03))
+                .enqueue(object : SessionCallback<ScooterOutLockControlResult> {
+                    override fun onSuccess(
+                        call: ISessionCall<ScooterOutLockControlResult>,
+                        data: IResp<ScooterOutLockControlResult>
+                    ) {
+                        val result = data.getResult()
+                        if (result != null) {
+                            Log.d("=====", result.toString())
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: ISessionCall<ScooterOutLockControlResult>,
+                        e: Throwable
+                    ) {
+                    }
+                })
+        }
+
+        btn_bloom_lock.setOnClickListener {
+            session.call(CommandManager.scooterCommand.setOutLockControl(0x13))
+                .enqueue(object : SessionCallback<ScooterOutLockControlResult> {
+                    override fun onSuccess(
+                        call: ISessionCall<ScooterOutLockControlResult>,
+                        data: IResp<ScooterOutLockControlResult>
+                    ) {
+                        val result = data.getResult()
+                        if (result != null) {
+                            Log.d("=====", result.toString())
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: ISessionCall<ScooterOutLockControlResult>,
+                        e: Throwable
+                    ) {
+                    }
+                })
+        }
+
+        btn_lantern.setOnClickListener {
+            session.call(CommandManager.scooterCommand.lanternControl())
+                .enqueue(object : SessionCallback<Boolean> {
+                    override fun onSuccess(call: ISessionCall<Boolean>, data: IResp<Boolean>) {
+                        val result = data.getResult()
+                        if (result != null) {
+                            Log.d("=====", result.toString())
+                        }
+                    }
+
+                    override fun onFailure(call: ISessionCall<Boolean>, e: Throwable) {
+                    }
+                })
+        }
+
+        btn_upgrade.setOnClickListener {
+
+        }
+
+        btn_get_log.setOnClickListener {
+            session.call(CommandManager.scooterCommand.readLog(session.getDeviceType()))
+                .asyncTimeout(10 * 1000)
+                .asyncCall(object : AsyncCallback<String> {
+                    override fun onStarted(success: Boolean) {
+                        Log.d("=====", "开始读取: $success")
+                    }
+
+                    override fun onReceiving(call: ISessionCall<String>, data: IResp<String>) {
+                        Log.d("=====", "读取到: ${data.getResult()}")
+                    }
+
+                    override fun onReceived() {
+                        Log.d("=====", "读取完毕")
+                        session.disConnect()
+                    }
+
+                    override fun onTimeout() {
+                        Log.d("=====", "超时")
+                    }
+                })
+        }
+    }
+}

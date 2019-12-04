@@ -1,0 +1,20 @@
+package com.omni.support.ble.core
+
+/**
+ * @author 邱永恒
+ *
+ * @time 2019/1/19  15:10
+ *
+ * @desc
+ *
+ */
+
+interface AsynCallback<T> {
+    fun onStarted(success: Boolean)
+
+    fun onReceiving(call: ISessionCall<T>, data: IResp<T>)
+
+    fun onReceived()
+
+    fun onTimeout()
+}

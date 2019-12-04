@@ -1,0 +1,80 @@
+package com.omni.support.ble.task
+
+import android.util.Log
+
+/**
+ * @author 邱永恒
+ *
+ * @time 2019/8/14 18:14
+ *
+ * @desc
+ *
+ */
+class Progress {
+    var totalPack = 0
+    var finishPack = 0
+    var packSize = 20
+    var speedCounter = 0L
+    var speedStart = 0L
+    var startTime = 0L
+
+    private var lastSpeed = 0L
+
+    /**
+     * 完成百分比
+     */
+    fun getPercent(): Int {
+        if (totalPack == 0) return 0
+        return finishPack * 100 / totalPack
+    }
+
+    /**
+     * 获取传输速度
+     */
+    fun getSpeed(): Long {
+        return lastSpeed
+    }
+
+    /**
+     * 速度采样
+     * @param value 包数
+     */
+    fun sampleSpeed(value: Int) {
+        speedCounter = value.toLong()
+
+        // 每100ms采样一次
+        if (System.currentTimeMillis() - speedStart > 100) {
+            // 计算上一次的速度值
+            val period = System.currentTimeMillis() - speedStart    // ms
+            lastSpeed = if (period == 0L) {
+                0
+            } else {
+                (speedCounter.toDouble() * packSize * 1000 / period).toLong()
+            }
+
+            // reset
+            speedCounter = 0
+            speedStart = System.currentTimeMillis()
+        }
+    }
+
+    /**
+     * 重置
+     */
+    fun reset() {
+        totalPack = 0
+        finishPack = 0
+        speedCounter = 0
+        speedStart = 0
+        startTime = 0
+        lastSpeed = 0
+    }
+
+    fun getTimeUsed(): Long {
+        return System.currentTimeMillis() - startTime
+    }
+
+    override fun toString(): String {
+        return "Progress(totalPack=$totalPack, finishPack=$finishPack)"
+    }
+}

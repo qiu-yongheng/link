@@ -2,6 +2,9 @@ package com.omni.support.widget.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 
 /**
  * @author 邱永恒
@@ -35,4 +38,15 @@ abstract class BaseActivity : AppCompatActivity() {
     open fun initSubscribe() {}
 
     open fun initData() {}
+
+    /**
+     * 实例化ViewModel子类
+     */
+    inline fun <reified T : ViewModel> getViewModel(factory: ViewModelProvider.Factory?): T {
+        return ViewModelProviders.of(this, factory).get(T::class.java)
+    }
+
+    protected fun getAppViewModelProvider(): ViewModelProvider {
+        return (applicationContext as BaseApp).getAppViewModelProvider(this)
+    }
 }

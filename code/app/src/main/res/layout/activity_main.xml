@@ -1,19 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".MainActivity">
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <TextView
-            android:layout_width="wrap_content"
+
+        <Button
+            android:id="@+id/btn_scan"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="Hello World!"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:text="二维码扫描" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/btn_welcome"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="欢迎界面" />
+
+        <Button
+            android:id="@+id/btn_dashboard"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="仪表盘" />
+
+        <Button
+            android:id="@+id/btn_ble"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="马蹄锁测试" />
+
+        <Button
+            android:id="@+id/btn_scooter"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="滑板车测试" />
+
+        <Button
+            android:id="@+id/btn_wc"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="轮椅锁测试" />
+
+        <Button
+            android:id="@+id/btn_keybox"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="钥匙盒锁测试" />
+
+        <Button
+            android:id="@+id/btn_ulock"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="U型锁测试" />
+
+        <Button
+            android:id="@+id/btn_carport"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="车位锁测试" />
+
+        <Button
+            android:id="@+id/btn_box"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="柜锁测试" />
+
+        <Button
+            android:id="@+id/btn_bsj"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="博实结测试" />
+
+        <Button
+            android:id="@+id/btn_hj"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="洪记测试" />
+
+        <Button
+            android:id="@+id/btn_bloom"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="钢缆锁测试" />
+
+        <Button
+            android:id="@+id/btn_stem"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="智能把立测试" />
+
+
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,42 @@
+package com.omni.support.ble.protocol.box.model
+
+import android.util.Log
+import com.omni.support.ble.core.BufferDeserializable
+import com.omni.support.ble.utils.BufferConverter
+import com.omni.support.ble.utils.HexString
+import kotlin.math.min
+
+/**
+ * @author 邱永恒
+ *
+ * @time 2019/8/23 14:51
+ *
+ * @desc
+ *
+ */
+class BoxLockInfoResult : BufferDeserializable {
+    var voltage: Int = 0
+    var isLowUnlock: Boolean = false
+    var mainVersion: Int = 0
+    var minorVersion: Int = 0
+    var numberOfEdits: Int = 0
+
+    override fun setBuffer(buffer: ByteArray) {
+        if (buffer.size != 7) {
+            return
+        }
+
+        Log.d("=====", "柜锁: ${HexString.valueOf(buffer)}")
+        val bc = BufferConverter(buffer)
+        voltage = bc.u16
+        bc.offset(1)
+        isLowUnlock = bc.u8 == 1
+        mainVersion = bc.u8
+        minorVersion = bc.u8
+        numberOfEdits = bc.u8
+    }
+
+    override fun toString(): String {
+        return "BoxLockInfoResult(voltage=$voltage, isLowUnlock=$isLowUnlock, mainVersion=$mainVersion, minorVersion=$minorVersion, numberOfEdits=$numberOfEdits)"
+    }
+}

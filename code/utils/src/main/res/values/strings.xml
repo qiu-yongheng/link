@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">utils</string>
+    <string name="utils_hint_denied_permission">您已拒绝我们申请权限，请同意权限，否则APP功能将无法正常使用</string>
+    <string name="utils_hint_launch_setting">我们需要一些您拒绝的权限或系统未能应用失败的权限，请手动在设置页面授权，否则该功能将无法正常使用!</string>
 </resources>

@@ -1,0 +1,22 @@
+//package com.omni.support.ble.link
+//
+//import com.omni.support.ble.profile.sub.KeyboxProfileManager
+//import com.omni.support.ble.protocol.keybox.KeyboxPackAdapter
+//import com.omni.support.ble.session.BaseBuilder
+//
+///**
+// * @author 邱永恒
+// *
+// * @time 2019/8/28 17:05
+// *
+// * @desc
+// *
+// */
+//class KeyboxLink(build: BaseBuilder<*>) : BleLink(build) {
+//    init {
+//        setDataPackAdapter(KeyboxPackAdapter())
+//
+//        profile = KeyboxProfileManager(receiver)
+//        profile.setGattCallbacks(profileCallback)
+//    }
+//}

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+
+            <Button
+                    android:id="@+id/btn_connect"
+                    android:text="连接"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_disconnect"
+                    android:text="断开连接"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_key"
+                    android:text="获取key"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_unlock"
+                    android:text="开锁"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_info"
+                    android:text="获取锁信息"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_set_timestamp"
+                    android:text="设置时间戳"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_record"
+                    android:text="获取开锁记录"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_clean_record"
+                    android:text="清除开锁记录"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_alert_open"
+                    android:text="报警开"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_alert_close"
+                    android:text="报警关"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_modify_key"
+                    android:text="修改蓝牙key"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_reset_key"
+                    android:text="重置蓝牙key"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_set_temp_pwd"
+                    android:text="设置临时密码"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_query_temp_pwd"
+                    android:text="查询临时密码"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_delete_temp_pwd"
+                    android:text="删除临时密码"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_delete_all_temp_pwd"
+                    android:text="清除全部临时密码"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_random_code_config"
+                    android:text="随机码配置"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_show_random_code"
+                    android:text="显示随机码"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_upgrade"
+                    android:text="固件升级"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:id="@+id/btn_shutdown"
+                    android:text="关机"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

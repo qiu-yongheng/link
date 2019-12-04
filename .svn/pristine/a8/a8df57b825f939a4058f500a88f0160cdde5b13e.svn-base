@@ -1,0 +1,212 @@
+package com.omni.production.check.dialog;
+
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.SeekBar;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.blankj.utilcode.constant.PermissionConstants;
+import com.blankj.utilcode.util.PermissionUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.omni.production.check.R;
+import com.omni.production.check.utils.SharedPreferencesUtil;
+
+import java.util.HashMap;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
+
+/**
+ * @author 邱永恒
+ * @time 2019/7/3 16:23
+ * @desc
+ */
+public class ScanDialog extends DialogFragment implements BluetoothAdapter.LeScanCallback {
+
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
+    @BindView(R.id.btn_stop)
+    Button btnStop;
+    @BindView(R.id.btn_start)
+    Button btnStart;
+    Unbinder unbinder;
+    @BindView(R.id.tv_rssi)
+    TextView tvRssi;
+    @BindView(R.id.sb_rssi)
+    SeekBar sbRssi;
+    private BluetoothManager bluetoothManager;
+    private BluetoothAdapter bluetoothAdapter;
+    private DeviceAdapter adapter = new DeviceAdapter();
+    private OnScanListener listener;
+    private Handler handler = new Handler();
+    private HashMap<String, String> map = new HashMap<>();
+    private String filterName = "";
+    private int filterRSSI;
+
+    public void setFilterName(String name) {
+        filterName = name;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.dialog_scan, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initView();
+        initBluetooth();
+        initListener();
+    }
+
+    private void initView() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        adapter.bindToRecyclerView(recyclerView);
+
+        int progress = SharedPreferencesUtil.getSp().getSP_Int("rssi_progress", 30);
+
+        sbRssi.setMax(60);
+        filterRSSI = -(progress + 40);
+        tvRssi.setText(filterRSSI + "db");
+        sbRssi.setProgress(progress);
+    }
+
+    private void initBluetooth() {
+        bluetoothManager = (BluetoothManager) getContext().getSystemService(Context.BLUETOOTH_SERVICE);
+        bluetoothAdapter = bluetoothManager.getAdapter();
+        bluetoothAdapter.enable();
+        SystemClock.sleep(100);
+        startScan();
+    }
+
+    private void initListener() {
+        btnStart.setOnClickListener(view -> startScan());
+
+        btnStop.setOnClickListener(view -> {
+            bluetoothAdapter.stopLeScan(ScanDialog.this);
+            btnStart.setEnabled(true);
+            btnStop.setEnabled(false);
+        });
+
+        adapter.setOnItemClickListener((a, view, position) -> {
+            Device device = adapter.getItem(position);
+            if (listener != null) {
+                listener.onChoose(device);
+            }
+            dismiss();
+        });
+
+        sbRssi.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                SharedPreferencesUtil.getSp().putSP("rssi_progress", i);
+                filterRSSI = -(i + 40);
+                tvRssi.setText(filterRSSI + "db");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+
+    private void startScan() {
+        PermissionUtils.permission(PermissionConstants.LOCATION)
+                .callback(new PermissionUtils.SimpleCallback() {
+                    @Override
+                    public void onGranted() {
+                        map.clear();
+                        adapter.setNewData(null);
+                        bluetoothAdapter.startLeScan(ScanDialog.this);
+                        btnStart.setEnabled(false);
+                        btnStop.setEnabled(true);
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                bluetoothAdapter.stopLeScan(ScanDialog.this);
+                                btnStart.setEnabled(true);
+                                btnStop.setEnabled(true);
+                            }
+                        }, 10_000);
+                    }
+
+                    @Override
+                    public void onDenied() {
+                        dismiss();
+                    }
+                })
+                .request();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        bluetoothAdapter.stopLeScan(ScanDialog.this);
+        handler.removeCallbacksAndMessages(null);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    /**
+     * 扫描回调
+     *
+     * @param bluetoothDevice
+     * @param rssi
+     * @param bytes
+     */
+    @Override
+    public void onLeScan(BluetoothDevice bluetoothDevice, int rssi, byte[] bytes) {
+        Log.d("=====", "搜索到设备: " + bluetoothDevice.getName() + ", " + bluetoothDevice.getAddress());
+        String name = bluetoothDevice.getName();
+        String address = bluetoothDevice.getAddress();
+        if (name == null || address == null || (!name.contains(filterName) && !TextUtils.isEmpty(filterName)) || rssi < filterRSSI) {
+            return;
+        }
+        if (map.get(address) == null) {
+            map.put(address, address);
+            adapter.addData(new Device(bluetoothDevice, rssi));
+        }
+    }
+
+    public void setOnScanListener(OnScanListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnScanListener {
+        void onChoose(Device device);
+    }
+}

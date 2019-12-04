@@ -1,0 +1,8 @@
+package com.omni.support.ble.core
+
+/**
+ * 数据反序列化接口
+ */
+interface BufferDeserializable {
+    fun setBuffer(buffer: ByteArray)
+}

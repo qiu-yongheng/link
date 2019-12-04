@@ -1,0 +1,5 @@
+<resources>
+    <string name="utils_hint_denied_permission">You have denied us permission to apply, please agree to the permissions, otherwise the APP function will not work properly.</string>
+    <string name="utils_hint_launch_setting">We need some permission that you refused or the system failed to apply the failed permission. Please manually authorize the settings page, otherwise the function will not work properly!</string>
+
+</resources>

@@ -1,0 +1,26 @@
+package com.omni.support.ble.session
+
+/**
+ * @author 邱永恒
+ *
+ * @time 2019/9/15 14:14
+ *
+ * @desc
+ *
+ */
+open class SimpleSessionListener: ISessionListener {
+    override fun onConnecting() {
+    }
+
+    override fun onConnected() {
+    }
+
+    override fun onDisconnected() {
+    }
+
+    override fun onDeviceNoSupport() {
+    }
+
+    override fun onReady() {
+    }
+}

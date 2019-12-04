@@ -1,0 +1,31 @@
+//package com.omni.support.ble.link
+//
+//import com.omni.support.ble.profile.sub.WheelchairProfileManager
+//import com.omni.support.ble.protocol.bike.BikePackAdapter
+//import com.omni.support.ble.session.BaseBuilder
+//import com.omni.support.ble.utils.CRC
+//
+///**
+// * @author 邱永恒
+// *
+// * @time 2019/8/27 15:49
+// *
+// * @desc
+// *
+// */
+//class WheelchairLink(build: BaseBuilder<*>) : BleLink(build) {
+//    init {
+//        setDataPackAdapter(BikePackAdapter())
+//
+//        profile = WheelchairProfileManager(receiver)
+//        profile.setGattCallbacks(profileCallback)
+//    }
+//
+//    override fun customRead(buffer: ByteArray, queue: SimpleBlockingQueue) {
+//        if (buffer.size == 20 && CRC.checkFirstCRC16(buffer)) {
+//            debug("添加头: 0xFB")
+//            // 如果是传输模式, 手动添加cmd, 方便解析
+//            queue.put(0xFB.toByte())
+//        }
+//    }
+//}

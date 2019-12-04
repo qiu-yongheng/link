@@ -1,0 +1,124 @@
+package com.omni.support.ble.profile
+
+import android.bluetooth.*
+import android.content.Context
+import android.util.Log
+import com.omni.support.ble.BleModuleHelper
+import com.omni.support.ble.exception.BleException
+import com.omni.support.ble.utils.HexString
+import no.nordicsemi.android.ble.BleManager
+import no.nordicsemi.android.ble.callback.DataReceivedCallback
+import no.nordicsemi.android.ble.data.Data
+import java.util.*
+
+/**
+ * @author 邱永恒
+ *
+ * @time 2019/8/8 22:15
+ *
+ * @desc 马蹄锁蓝牙协议管理
+ *
+ */
+abstract class ProfileManager : BleManager<OmniBleManagerCallbacks>(BleModuleHelper.getApp()) {
+    lateinit var receiver: DataReceivedCallback
+
+    private var bluetoothManager: BluetoothManager? = null
+    private var bluetoothAdapter: BluetoothAdapter? = null
+    private var supported: Boolean = false
+    private var notify: BluetoothGattCharacteristic? = null
+    private var write: BluetoothGattCharacteristic? = null
+
+    init {
+        bluetoothManager =
+            BleModuleHelper.getApp().getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        bluetoothAdapter = bluetoothManager?.adapter
+    }
+
+    private val gattCallback = object : BleManagerGattCallback() {
+        override fun initialize() {
+            initNotify()
+        }
+
+        override fun isRequiredServiceSupported(gatt: BluetoothGatt): Boolean {
+            val service = gatt.getService(getService())
+            if (service != null) {
+                notify = service.getCharacteristic(getNotify())
+                write = service.getCharacteristic(getWrite())
+            }
+
+            supported = notify != null && write != null
+            return supported
+        }
+
+        override fun onDeviceDisconnected() {
+            notify = null
+            write = null
+        }
+    }
+
+    override fun getGattCallback(): BleManagerGattCallback {
+        return gattCallback
+    }
+
+    override fun shouldClearCacheWhenDisconnected(): Boolean {
+        return !supported
+    }
+
+//    override fun log(priority: Int, message: String) {
+//        super.log(priority, message)
+//        Log.println(priority, this.javaClass.simpleName, message)
+//    }
+
+    fun connect(mac: String) {
+        if (bluetoothAdapter?.isEnabled == false) {
+            throw BleException(BleException.ERR_BLE_UN_ENABLE, "蓝牙未打开")
+        }
+        val device =
+            bluetoothAdapter?.getRemoteDevice(mac)
+                ?: throw BleException(BleException.ERR_DEVICE_NOT_FOUND, "设备未找到")
+
+        connect(device)
+            .retry(2, 100)
+            .useAutoConnect(false)
+            .enqueue()
+    }
+
+    /**
+     * 初始化订阅
+     */
+    open fun initNotify() {
+        setNotificationCallback(notify).with(receiver)
+        enableNotifications(notify).enqueue()
+    }
+
+    /**
+     * 写数据
+     */
+    fun send(data: ByteArray) {
+        writeCharacteristic(write, data).enqueue()
+    }
+
+    /**
+     * 读数据, 在link中开个线程, 循环读
+     */
+    fun read() {
+        readCharacteristic(notify).with(readCallback).enqueue()
+    }
+
+    private var lastByteArray: ByteArray? = null
+    private val readCallback = DataReceivedCallback { device, data ->
+        val bytes = data.value
+        if (lastByteArray == null || bytes == null || !lastByteArray!!.contentEquals(bytes)) {
+            lastByteArray = bytes
+            receiver.onDataReceived(device, data)
+        }
+    }
+
+    private fun debug(msg: String) {
+        Log.d(this.javaClass.simpleName, msg)
+    }
+
+    abstract fun getService(): UUID
+    abstract fun getNotify(): UUID
+    abstract fun getWrite(): UUID
+}

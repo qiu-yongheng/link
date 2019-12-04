@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_connect"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="连接" />
+
+            <Button
+                android:id="@+id/btn_disconnect"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="断开连接" />
+
+            <Button
+                android:id="@+id/btn_unlock"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="开锁" />
+
+            <Button
+                android:id="@+id/btn_lock"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="关锁" />
+
+            <Button
+                android:id="@+id/btn_find"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="找车" />
+
+            <Button
+                android:id="@+id/btn_light_on"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="开灯" />
+
+            <Button
+                android:id="@+id/btn_light_off"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="关灯" />
+
+            <Button
+                android:id="@+id/btn_v"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="校准" />
+
+            <Button
+                android:id="@+id/btn_shutdown"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="关机" />
+
+            <Button
+                android:id="@+id/btn_reset"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="重置" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

@@ -1,0 +1,22 @@
+//package com.omni.support.ble.link
+//
+//import com.omni.support.ble.profile.sub.BoxProfileManager
+//import com.omni.support.ble.protocol.box.BoxPackAdapter
+//import com.omni.support.ble.session.BaseBuilder
+//
+///**
+// * @author 邱永恒
+// *
+// * @time 2019/9/2 15:31
+// *
+// * @desc 柜锁
+// *
+// */
+//class BoxLink(build: BaseBuilder<*>) : BleLink(build) {
+//    init {
+//        setDataPackAdapter(BoxPackAdapter())
+//
+//        profile = BoxProfileManager(receiver)
+//        profile.setGattCallbacks(profileCallback)
+//    }
+//}

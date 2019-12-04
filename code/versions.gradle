@@ -1,6 +1,6 @@
 ext.android_sdk = [
         'compile': 29,
-        'tool'   : "29.0.0",
+        'tool'   : "29.0.2",
         'min'    : 19,
         'target' : 29
 ]
@@ -11,8 +11,8 @@ ext.deps = [
 ]
 
 ext.versions = [
-        'ble'   : '1.0.0',
-        'utils' : '1.0.0',
-        'widget': '1.0.0',
+        'ble'    : '1.1.9',
+        'utils'  : '1.0.1',
+        'widget' : '1.0.4',
         'omnible': '1.0.1'
 ]

@@ -1,1 +1,1 @@
-include ':app', ':ble', ':utils', ':widget', ':omniBleLibrary'
+include ':app', ':ble', ':utils', ':widget'

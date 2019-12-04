@@ -1,0 +1,29 @@
+// 保留注释
+task buildSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+// 解决 JavaDoc 中文注释生成失败的问题
+tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+}
+
+artifacts {
+    archives buildSourcesJar
+}
+
+apply plugin: 'maven'
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri(REPO_LOCAL_URL))
+            pom.groupId = REPO_GROUP
+            pom.artifactId = REPO_ARTIFACTID
+            pom.version = REPO_VERSION
+        }
+    }
+}

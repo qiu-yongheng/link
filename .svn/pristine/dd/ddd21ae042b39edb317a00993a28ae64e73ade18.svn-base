@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/btn_scan"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="二维码扫描" />
+
+    <Button
+        android:id="@+id/btn_welcome"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="欢迎界面" />
+
+    <Button
+        android:id="@+id/btn_ble"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="马蹄锁测试" />
+
+    <Button
+        android:id="@+id/btn_scooter"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="滑板车测试" />
+
+    <Button
+        android:id="@+id/btn_wc"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="轮椅锁测试" />
+
+    <Button
+        android:id="@+id/btn_keybox"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="钥匙盒锁测试" />
+
+    <Button
+        android:id="@+id/btn_ulock"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="U型锁测试" />
+
+    <Button
+        android:id="@+id/btn_carport"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="车位锁测试" />
+
+    <Button
+        android:id="@+id/btn_box"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="柜锁测试" />
+
+    <Button
+        android:id="@+id/btn_bsj"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="博实结测试" />
+
+
+
+</LinearLayout>

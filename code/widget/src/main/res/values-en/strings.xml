@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">widget</string>
+    <string name="widget_scan_device">Scan nearby devices</string>
+    <string name="widget_stop_scan">Stop scanning</string>
+    <string name="widget_start_scan">Start scanning</string>
+    <string name="widget_rssi">RSSI:</string>
+    <string name="widget_qr_scan">Scan QR code</string>
+    <string name="widget_scan_hint">QR code / Barcode scanning</string>
+</resources>
